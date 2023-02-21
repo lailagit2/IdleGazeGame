@@ -38,6 +38,9 @@ public class FollowPoint : MonoBehaviour
     {
         immediateFollow.LookAt(followThis, Vector3.up);
 
+        turnSpeed = 0.02f * Quaternion.Angle(immediateFollow.rotation, this.transform.rotation);
+        walkSpeed = Mathf.Min(Vector3.Distance(immediateFollow.position, this.transform.position), 5f) * 0.25f;
+
         this.transform.rotation = Quaternion.RotateTowards(this.transform.rotation, immediateFollow.rotation, turnSpeed);   
         //atharva the turn speed probably needs to change (get faster) the further to the left or right the gaze is
 
