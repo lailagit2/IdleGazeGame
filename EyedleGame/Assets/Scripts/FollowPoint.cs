@@ -1,3 +1,8 @@
+/*
+ * Written by Rua M. Williams
+ * This script causes a player to follow, by gaze and by distance, an object transform.
+ */
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
