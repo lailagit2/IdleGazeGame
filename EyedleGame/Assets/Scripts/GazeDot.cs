@@ -5,13 +5,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-//using Tobii.Gaming;
+using Tobii.Gaming;
 
 public class GazeDot : MonoBehaviour
 {
     public bool useMouse = true;    //set to false to use gaze
     public Vector3 gazeToWorldPosition;
-    public GameObject gazeSample;
 
     //public PrintGazePosition printGazePosition;
 
@@ -26,16 +25,17 @@ public class GazeDot : MonoBehaviour
     {
         RaycastHit hit;
 
-        Ray ray;
-        
-        if(!useMouse)
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+        if (!useMouse)
         {
-            // put the gaze screen location here somehow
-            Vector2 gazeLoc = new Vector2(gazeSample.transform.position.x, gazeSample.transform.position.y);
-            ray = Camera.main.ScreenPointToRay(gazeLoc);
+            GazePoint gazePoint = TobiiAPI.GetGazePoint();
+            if(gazePoint.IsValid)
+            {
+                Vector2 gazeLoc = gazePoint.Viewport;
+                ray = Camera.main.ViewportPointToRay(new Vector3(gazeLoc.x, gazeLoc.y, 0f));
+            }
         }
-        else
-            ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
         if (Physics.Raycast(ray, out hit))
         {

@@ -228,6 +228,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GazeSample
       objectReference: {fileID: 0}
+    - target: {fileID: 1151146318853528853, guid: 5940ee3b3d8520142b4d69f391a6c4fd, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8967398260593754236, guid: 5940ee3b3d8520142b4d69f391a6c4fd, type: 3}
       propertyPath: m_RootOrder
       value: 7
