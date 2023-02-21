@@ -522,7 +522,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   followThis: {fileID: 1549468562}
   immediateFollow: {fileID: 469534081}
-  minDistance: 5
+  minDistance: 25
   walkSpeed: 2
   turnSpeed: 0.2
 --- !u!1 &1265278560

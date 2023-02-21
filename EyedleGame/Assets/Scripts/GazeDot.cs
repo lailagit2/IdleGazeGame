@@ -43,7 +43,7 @@ public class GazeDot : MonoBehaviour
         }
         else
         {
-            gazeToWorldPosition = ray.GetPoint(15f);
+            gazeToWorldPosition = ray.GetPoint(50f);
         }
 
         this.transform.position = gazeToWorldPosition;

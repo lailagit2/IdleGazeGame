@@ -39,14 +39,14 @@ public class FollowPoint : MonoBehaviour
         immediateFollow.LookAt(followThis, Vector3.up);
 
         turnSpeed = 0.02f * Quaternion.Angle(immediateFollow.rotation, this.transform.rotation);
-        walkSpeed = Mathf.Min(Vector3.Distance(immediateFollow.position, this.transform.position), 5f) * 0.25f;
+        walkSpeed = Mathf.Min(Vector3.Distance(followThis.position, this.transform.position), minDistance) / minDistance;
 
         this.transform.rotation = Quaternion.RotateTowards(this.transform.rotation, immediateFollow.rotation, turnSpeed);   
         //atharva the turn speed probably needs to change (get faster) the further to the left or right the gaze is
 
         if (Vector3.Distance(this.transform.position, followThis.position) > minDistance)
         {
-            Debug.Log("The dot is far away and we are walking toward it: " + Vector3.Distance(this.transform.position, followThis.position));
+            Debug.Log("The dot is " + Vector3.Distance(this.transform.position, followThis.position) + " far away and we are walking toward it at " + walkSpeed + ".");
             rb.AddForce(this.gameObject.transform.forward * walkSpeed);
         }
         else
