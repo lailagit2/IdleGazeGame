@@ -522,9 +522,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   followThis: {fileID: 1549468562}
   immediateFollow: {fileID: 469534081}
-  minDistance: 25
+  minDistance: 5
+  maxAngle: 60
+  maxVertical: 10
   walkSpeed: 2
-  turnSpeed: 0.2
+  turnSpeed: 1
 --- !u!1 &1265278560
 GameObject:
   m_ObjectHideFlags: 0
@@ -843,7 +845,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1549468558}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.97, z: -4.95}
+  m_LocalPosition: {x: 0, y: 2, z: -5}
   m_LocalScale: {x: 0.25, y: 0.25, z: 0.25}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -864,6 +866,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   useMouse: 0
   gazeToWorldPosition: {x: 0, y: 0, z: 0}
+  middleDistance: 50
 --- !u!1 &1584420080
 GameObject:
   m_ObjectHideFlags: 0

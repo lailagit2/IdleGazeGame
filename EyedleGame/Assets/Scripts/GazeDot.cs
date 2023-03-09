@@ -11,6 +11,7 @@ public class GazeDot : MonoBehaviour
 {
     public bool useMouse = true;    //set to false to use gaze
     public Vector3 gazeToWorldPosition;
+    public float middleDistance = 50f;  //where to project the dot if there is no surface
 
     //public PrintGazePosition printGazePosition;
 
@@ -43,7 +44,7 @@ public class GazeDot : MonoBehaviour
         }
         else
         {
-            gazeToWorldPosition = ray.GetPoint(50f);
+            gazeToWorldPosition = ray.GetPoint(middleDistance);
         }
 
         this.transform.position = gazeToWorldPosition;
