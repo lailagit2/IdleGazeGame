@@ -15,6 +15,10 @@ public class GazeDot : MonoBehaviour
 
     //public PrintGazePosition printGazePosition;
 
+    private const int GAZE_RUNNING_AVG_SIZE = 50; // Collect an array of gaze points and avg them or create an array of the raycasts, etc. 
+    //  Probably keep an array of gaze points, avg their location as you are forming the array
+    private Vector3[] gazeRunningAvg = new Vector3[GAZE_RUNNING_AVG_SIZE];
+
     // Start is called before the first frame update
     void Start()
     {
@@ -30,10 +34,10 @@ public class GazeDot : MonoBehaviour
 
         if (!useMouse)
         {
-            GazePoint gazePoint = TobiiAPI.GetGazePoint();
+            GazePoint gazePoint = TobiiAPI.GetGazePoint(); // Returns a position that you are looking at
             if(gazePoint.IsValid)
             {
-                Vector2 gazeLoc = gazePoint.Viewport;
+                Vector2 gazeLoc = gazePoint.Viewport; // Possibly where you want to do an average of the gazepoint array viewport projection
                 ray = Camera.main.ViewportPointToRay(new Vector3(gazeLoc.x, gazeLoc.y, 0f));
             }
         }
@@ -47,7 +51,31 @@ public class GazeDot : MonoBehaviour
             gazeToWorldPosition = ray.GetPoint(middleDistance);
         }
 
-        this.transform.position = gazeToWorldPosition;
+        // this.transform.position = gazeToWorldPosition; // The thing to change to a moving average
+       
+        // Presumably if we reset gazeRunningAvg for whatever reason, repopulate it by assuming there is a couple of nulls in a row at the front
+        if (gazeRunningAvg[0] == null)
+        {
+            for (int i = 0; i < gazeRunningAvg.Length; i++)
+            {
+                if (gazeRunningAvg[i] == null)
+                {
+                    gazeRunningAvg[i] = gazeToWorldPosition;
+                }
+            }
+        }
+
+        // Shift the running average to the front to make way for the new data
+        for (int i = 0; i < gazeRunningAvg.Length - 1; i++)
+            gazeRunningAvg[i] = gazeRunningAvg[i + 1];
+        gazeRunningAvg[gazeRunningAvg.Length - 1] = gazeToWorldPosition;
         
+        Vector3 sum = new Vector3(0, 0, 0);
+        foreach (var gaze in gazeRunningAvg)
+        {
+            sum += gaze;
+        }
+
+        this.transform.position = sum / (float) gazeRunningAvg.Length;
     }
 }
