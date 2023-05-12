@@ -1,6 +1,7 @@
 /*
  * Written by Rua M. Williams
  * This script causes a player to follow, by gaze and by distance, an object transform.
+ * This comment is for showing how to commit to GIT
  */
 
 using System.Collections;
