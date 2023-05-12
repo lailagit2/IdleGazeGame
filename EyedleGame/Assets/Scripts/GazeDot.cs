@@ -2,8 +2,6 @@
  * Written by Rua M. Williams
  * This script controls a game object transform location by mouse location or gaze point location
  */
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Tobii.Gaming;
 

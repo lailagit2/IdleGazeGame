@@ -89,7 +89,6 @@ public class FollowPoint : MonoBehaviour
                     Debug.Log("The dot is too close or there is no rigid body");
                 }
             }
-            
         }
     }
 
