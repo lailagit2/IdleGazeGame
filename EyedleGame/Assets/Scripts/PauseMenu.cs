@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class PauseMenu : MonoBehaviour
 {
+    [SerializeField] Camera followingPointCamera;
+    [SerializeField] GameObject gazeLocation;
     [SerializeField] private List<GameObject> knobs;
 
     public FollowPoint followComponent;
@@ -13,6 +15,10 @@ public class PauseMenu : MonoBehaviour
 
     public void Toggle()
     {
+        bool unpaused = GetComponent<Renderer>().enabled;
+        gazeLocation.GetComponent<MeshRenderer>().enabled = GetComponent<Renderer>().enabled;
+        followingPointCamera.GetComponent<FollowPoint>().enabled = unpaused;
+
         List<GameObject> knobsAndMenu = knobs;
         knobsAndMenu.Add(gameObject);
         foreach (var obj in knobs)
@@ -38,6 +44,5 @@ public class PauseMenu : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
     }
 }

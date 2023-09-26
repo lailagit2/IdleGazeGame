@@ -136,7 +136,7 @@ GameObject:
   - component: {fileID: 6729177}
   - component: {fileID: 6729176}
   - component: {fileID: 6729180}
-  m_Layer: 2
+  m_Layer: 0
   m_Name: MoveSpeedKnob
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -236,7 +236,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mainCam: {fileID: 1153268807}
   offset: 0.5
-  knobLength: 10
+  knobLength: 2
   pMovement: {fileID: 1265278560}
 --- !u!1 &98587413
 GameObject:
@@ -428,6 +428,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a057a2297aa86484b94e123273c0989e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  followingPointCamera: {fileID: 1153268807}
+  gazeLocation: {fileID: 1549468558}
   knobs:
   - {fileID: 6729175}
   followComponent: {fileID: 1153268810}

@@ -1,5 +1,5 @@
-using UnityEditor;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class SetMoveSpeed : MonoBehaviour
 {
@@ -8,10 +8,11 @@ public class SetMoveSpeed : MonoBehaviour
     private float lowerBound, upperBound;
     [SerializeField] Camera mainCam;
     [SerializeField] private float offset = 0.5f;
-    [SerializeField] private int knobLength;
-    private int knobLowerBound
+    [SerializeField] private float knobLength;
+    private bool isPressing;
+    private float knobLowerBound
     {
-        get => (int) ogKnobPos.x;
+        get => ogKnobPos.x;
     }
 
     [SerializeField] private GameObject pMovement;
@@ -21,7 +22,7 @@ public class SetMoveSpeed : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        ogKnobPos = transform.position; 
+        ogKnobPos = transform.localPosition; 
         float ogPlayerSpeed = getPMove().sensitivity;
         float plusMinus50 = ogPlayerSpeed * offset;
         lowerBound = ogPlayerSpeed - plusMinus50;
@@ -34,29 +35,28 @@ public class SetMoveSpeed : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Vector3 posOffset;
-        Vector3 pointingAt;
         float rawVal;
         RaycastHit hit;
 
-        if (Input.GetKeyDown(KeyCode.Mouse0))
+        if (Input.GetKeyDown(KeyCode.Mouse0)) 
+            isPressing = true;
+        if (Input.GetKeyUp(KeyCode.Mouse0))
+            isPressing = false;
+
+        if (isPressing)
         {
-            print("keydown");
+            //print("keydown");
             Vector3 mousePos = Input.mousePosition;
             Ray mouseIntoMenu = mainCam.ScreenPointToRay(mousePos);
             if (Physics.Raycast(mouseIntoMenu, out hit))
             {
-                print("hit it!");
-                pointingAt = mousePos;
-
-                posOffset = pointingAt - ogKnobPos;
+                //print("hit it!");
             }
             else return;
         }
         // Add else branch for eyetracker.
         else return;
 
-        rawVal = Mathf.Clamp(posOffset.x, ogKnobPos.x, ogKnobPos.x + knobLength);
         // The transform.position should stay on the relative x-axis
         // of the menu. Unfortunately, as the player will turn and rotate,
         // the relative x-axis is a complicated calculation. ASK ABOUT IT!
@@ -66,9 +66,23 @@ public class SetMoveSpeed : MonoBehaviour
             transform.position.y,
             transform.position.z);
         */
-        transform.position = hit.point;
+        var localPos = transform.localPosition;
 
-        float normal = (rawVal - knobLowerBound) / (knobLength - knobLowerBound);
+        float inWorldMouseX = mainCam.ScreenToWorldPoint(Input.mousePosition).x;
+
+        float lerpedMouseX = (inWorldMouseX * 9 + localPos.x) / 10;
+        lerpedMouseX = inWorldMouseX;
+        rawVal = knobLowerBound + Mathf.Max(0, lerpedMouseX - ogKnobPos.x);
+        rawVal = knobLowerBound;
+        print("rawVal " + rawVal);
+        print("maybe the inWorldMouseX is changing? " + inWorldMouseX 
+            + " even tho mouseX " + Input.mousePosition.x);
+        float val = Mathf.Clamp(rawVal, 0.05f, (knobLength + ogKnobPos.x) * 0.95f);
+        print("val " + val);
+        localPos.x = val;
+        transform.localPosition = localPos;
+
+        float normal = (rawVal - knobLowerBound) / knobLength;
 
         getPMove().sensitivity = lowerBound + normal * (upperBound - lowerBound);
     }
