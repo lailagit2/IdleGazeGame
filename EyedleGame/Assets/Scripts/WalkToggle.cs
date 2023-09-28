@@ -27,6 +27,13 @@ public class WalkToggle : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Escape)) 
+        {
+            var pauseMenuPlane = GameObject.Find("PauseMenuPlane"); 
+            var pauseMenu = pauseMenuPlane.GetComponent<PauseMenu>();
+            pauseMenu.Toggle();
+        }
+
         // Toggle the walktoggle button by looking for long enough in a row
         bool newFocused = IsFocused();
         lastFocusChange += Time.deltaTime;
