@@ -12,6 +12,7 @@ public class PauseMenu : MonoBehaviour
     private void onVisible()
     {
     }
+    // UI -> Unlit -> Transparent is how you get transparent materials
 
     public void Toggle()
     {
