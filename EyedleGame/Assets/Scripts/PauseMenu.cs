@@ -1,45 +1,47 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PauseMenu : MonoBehaviour
 {
-    [SerializeField] Camera followingPointCamera;
-    [SerializeField] GameObject gazeLocation;
-    [SerializeField] private List<GameObject> knobs;
+    [SerializeField] private GameObject gazeLocation;
 
-    public FollowPoint followComponent;
+    [SerializeField] private FollowPoint followComponent;
 
-    private void onVisible()
-    {
-    }
     // UI -> Unlit -> Transparent is how you get transparent materials
+    private void toggleRender() 
+    {
+        foreach (var comp in GetComponentsInChildren<MeshRenderer>())
+        {
+            if (comp == GetComponent<MeshRenderer>()) continue;
+            comp.enabled = !comp.enabled;
+        }
+    }
 
     public void Toggle()
     {
-        bool unpaused = GetComponent<Renderer>().enabled;
-        gazeLocation.GetComponent<MeshRenderer>().enabled = GetComponent<Renderer>().enabled;
-        followingPointCamera.GetComponent<FollowPoint>().enabled = unpaused;
+        bool unpaused = GetComponent<MeshRenderer>().enabled;
+        GetComponent<MeshRenderer>().enabled = !unpaused;
+        print("unpaused " + unpaused);
+        gazeLocation.GetComponent<Renderer>().enabled = !unpaused;
+        Camera.main.GetComponent<FollowPoint>().enabled = !unpaused;
 
-        List<GameObject> knobsAndMenu = knobs;
-        knobsAndMenu.Add(gameObject);
-        foreach (var obj in knobs)
+        toggleRender();
+        followComponent.enabled = !unpaused;
+
+        if (!unpaused) saveChanges();
+    }
+
+    private void saveChanges()
+    {
+        foreach (var slider in GetComponentsInChildren<Slider>())
         {
-            var renderer = obj.GetComponent<Renderer>();
-            renderer.enabled = !renderer.enabled;
-            if (obj == gameObject) 
-            {
-                followComponent.enabled = !renderer.enabled;
-                if (renderer.enabled) onVisible();
-            }
+            slider.SetPMove(); 
         }
-        knobsAndMenu.Remove(gameObject);
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        var renderer = GetComponent<Renderer>();
-        renderer.enabled = false;
+        toggleRender();
     }
 
     // Update is called once per frame

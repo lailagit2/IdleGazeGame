@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -260,7 +260,7 @@ MeshCollider:
   m_GameObject: {fileID: 304024077}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
   m_Convex: 0
   m_CookingOptions: 30
@@ -861,8 +861,9 @@ GameObject:
   - component: {fileID: 1250040274}
   - component: {fileID: 1250040273}
   - component: {fileID: 1250040272}
+  - component: {fileID: 1250040275}
   m_Layer: 0
-  m_Name: menu
+  m_Name: PauseMenu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -948,6 +949,20 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1250040270}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1250040275
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1250040270}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a057a2297aa86484b94e123273c0989e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gazeLocation: {fileID: 1549468558}
+  followComponent: {fileID: 1153268810}
 --- !u!1 &1265278560
 GameObject:
   m_ObjectHideFlags: 0
@@ -1174,6 +1189,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dab82b2196c83614092b9b04b1794a76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lowerPercent: 50
+  upperPercent: 200
+  pMovement: {fileID: 1153268805}
   sliderObject: {fileID: 1182240336}
 --- !u!114 &1433084017
 MonoBehaviour:

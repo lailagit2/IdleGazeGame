@@ -1,15 +1,22 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Slider : MonoBehaviour
 {
-    public GameObject sliderObject;
+    [SerializeField] private float lowerPercent, upperPercent;
+    [SerializeField] private GameObject pMovement;
+    [SerializeField] private GameObject sliderObject;
+    private float ogSens;
+
+    private FollowPoint getPMove() => pMovement.GetComponent<FollowPoint>();
+    private float ogSliderPosX
+    {
+        get => sliderObject.transform.position.x;
+    }
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        ogSens = getPMove().turnSpeed;
     }
 
     // Update is called once per frame
@@ -28,5 +35,14 @@ public class Slider : MonoBehaviour
             //increment the slider controlled value
             sliderObject.transform.localPosition = new Vector3(Mathf.Max(sliderObject.transform.localPosition.x - 0.01f, -0.5f), sliderObject.transform.localPosition.y, sliderObject.transform.localPosition.z);
         }
+    }
+
+    public void SetPMove()
+    {
+        float normalized = 0.5f + sliderObject.transform.localPosition.x; // now between 0 and 1 instead of -0.5 and 0.5
+
+        float sensPercent = (upperPercent - lowerPercent) * normalized + lowerPercent;
+        getPMove().turnSpeed = ogSens * sensPercent;
+        print("slider " + getPMove().turnSpeed);
     }
 }

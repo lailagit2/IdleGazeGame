@@ -29,7 +29,7 @@ public class WalkToggle : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape)) 
         {
-            var pauseMenuPlane = GameObject.Find("PauseMenuPlane"); 
+            var pauseMenuPlane = GameObject.Find("PauseMenu"); 
             var pauseMenu = pauseMenuPlane.GetComponent<PauseMenu>();
             pauseMenu.Toggle();
         }
