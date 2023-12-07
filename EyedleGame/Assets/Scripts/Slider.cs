@@ -1,27 +1,40 @@
 using UnityEngine;
 
-public class Slider : MonoBehaviour
+public abstract class Slider : ToggleButton
 {
-    [SerializeField] private float lowerPercent, upperPercent;
-    [SerializeField] private GameObject pMovement;
-    [SerializeField] private GameObject sliderObject;
-    private float ogSens;
+    [SerializeField] protected float lowerPercent, upperPercent;
+    [SerializeField] protected GameObject player;
+    [SerializeField] protected GameObject sliderObject;
+    protected float ogSens;
+    protected bool myFocused = false;
+    protected FollowPoint getFollowPoint() => player.GetComponent<FollowPoint>();
 
-    private FollowPoint getPMove() => pMovement.GetComponent<FollowPoint>();
-    private float ogSliderPosX
+    public void init(float ogSens)
     {
-        get => sliderObject.transform.position.x;
+        init(1.5f, 1.5f, FocusedMode.DEACTIVE);
+        this.ogSens = ogSens;
     }
+
+    public override GameObject GetGameObject()
+    {
+        return gameObject;
+    }
+
+    public override void OnActivate() => myFocused = true;
+    public override void OnDeactivate() => myFocused = false;
 
     // Start is called before the first frame update
     void Start()
     {
-        ogSens = getPMove().turnSpeed;
+
     }
 
     // Update is called once per frame
-    void Update()
+    public void Update()
     {
+        UpdateFocus();
+        if (!myFocused) return;
+
         //if focused
         //if gaze point
         if (Input.mousePosition.x > Camera.main.WorldToScreenPoint(sliderObject.transform.position).x)
@@ -37,12 +50,5 @@ public class Slider : MonoBehaviour
         }
     }
 
-    public void SetPMove()
-    {
-        float normalized = 0.5f + sliderObject.transform.localPosition.x; // now between 0 and 1 instead of -0.5 and 0.5
-
-        float sensPercent = (upperPercent - lowerPercent) * normalized + lowerPercent;
-        getPMove().turnSpeed = ogSens * sensPercent;
-        print("slider " + getPMove().turnSpeed);
-    }
+    public abstract void SetSliderValue();
 }
