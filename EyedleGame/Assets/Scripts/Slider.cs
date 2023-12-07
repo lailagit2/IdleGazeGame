@@ -37,16 +37,18 @@ public abstract class Slider : ToggleButton
 
         //if focused
         //if gaze point
-        if (Input.mousePosition.x > Camera.main.WorldToScreenPoint(sliderObject.transform.position).x)
+        if (Camera.main.WorldToScreenPoint(followComponent.followThis.position).x > Camera.main.WorldToScreenPoint(sliderObject.transform.position).x)
         {
+            Debug.Log("Eye is greater than bar");
             //increment the slider controlled value
-            sliderObject.transform.localPosition = new Vector3(Mathf.Min(sliderObject.transform.localPosition.x + 0.01f, 0.5f), sliderObject.transform.localPosition.y, sliderObject.transform.localPosition.z);
+            sliderObject.transform.localPosition = new Vector3(Mathf.Min(sliderObject.transform.localPosition.x + 0.001f, 0.5f), sliderObject.transform.localPosition.y, sliderObject.transform.localPosition.z);
         }
 
-        if (Input.mousePosition.x < Camera.main.WorldToScreenPoint(sliderObject.transform.position).x)
+        if (Camera.main.WorldToScreenPoint(followComponent.followThis.position).x < Camera.main.WorldToScreenPoint(sliderObject.transform.position).x)
         {
+            Debug.Log("Eye is less than bar");
             //increment the slider controlled value
-            sliderObject.transform.localPosition = new Vector3(Mathf.Max(sliderObject.transform.localPosition.x - 0.01f, -0.5f), sliderObject.transform.localPosition.y, sliderObject.transform.localPosition.z);
+            sliderObject.transform.localPosition = new Vector3(Mathf.Max(sliderObject.transform.localPosition.x - 0.001f, -0.5f), sliderObject.transform.localPosition.y, sliderObject.transform.localPosition.z);
         }
     }
 

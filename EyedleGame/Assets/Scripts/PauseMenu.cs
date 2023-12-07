@@ -38,11 +38,14 @@ public class PauseMenu : ToggleButton
         bool unpaused = !paused;
         paused = unpaused;
         print("unpaused " + unpaused);
-        gazeLocation.GetComponent<Renderer>().enabled = !unpaused;
-        Camera.main.GetComponent<FollowPoint>().enabled = !unpaused;
+        //gazeLocation.GetComponent<Renderer>().enabled = !unpaused;
+        //Camera.main.GetComponent<FollowPoint>().enabled = !unpaused;
 
         setRender(unpaused);
-        followComponent.enabled = !unpaused;
+        followComponent.isLooking = !unpaused;
+
+        GameObject otherUI = GameObject.Find("UIWalkToggle");
+        otherUI.SetActive(!unpaused);
 
         if (!unpaused) saveChanges();
     }

@@ -23,19 +23,18 @@ public class ToggleButton : MonoBehaviour
     float ACTIVATE_TIME = 1.5f;
     public void init(float DEACTIVATE_TIME, float ACTIVATE_TIME, FocusedMode focusedMode)
     {
+        TobiiAPI.Start(null);
+
         this.DEACTIVATE_TIME = DEACTIVATE_TIME;
         this.ACTIVATE_TIME = ACTIVATE_TIME;
         this.focusedMode = focusedMode;
     }
 
-    private static bool startedTobii = false;
+    //private static bool startedTobii = false;
     void Start()
     {
-        if (!startedTobii)
-        {
-            TobiiAPI.Start(null);
-            startedTobii = true;
-        }
+        //if children override start, call this in them
+        //TobiiAPI.Start(null);
     }
 
     // Please override these methods.

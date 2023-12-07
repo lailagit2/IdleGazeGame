@@ -1,4 +1,5 @@
 using UnityEngine;
+using Tobii.Gaming;
 
 public class WalkToggleButton : ToggleButton
 {

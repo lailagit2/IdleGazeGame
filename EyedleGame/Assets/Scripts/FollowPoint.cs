@@ -21,6 +21,7 @@ public class FollowPoint : MonoBehaviour
     public float turnSpeed = 1f;            //turn speed multiplier
 
     public bool isWalking = false;
+    public bool isLooking = true;
 
     // Start is called before the first frame update
     void Start()
@@ -57,36 +58,39 @@ public class FollowPoint : MonoBehaviour
                 }
             }
 
-            immediateFollow.LookAt(followThis, Vector3.up);     //give a rotation proxy with no z rotation
-
-            float angleBetween = Quaternion.Angle(immediateFollow.rotation, this.transform.rotation);
-            float distanceBetween = Vector3.Distance(followThis.position, this.transform.position);
-
-            // Debug.Log("Angle between: " + angleBetween);
-            // Debug.Log("Distance between: " + distanceBetween);
-
-            float turnAmount = turnSpeed * Mathf.Min(angleBetween, maxAngle) / maxAngle;
-            float walkAmount = walkSpeed * Mathf.Min(distanceBetween, minDistance) / minDistance;
-
-            // Debug.Log("The dot is " + angleBetween + " angle away and we are turning toward it at " + turnAmount + ".");
-            //turn camera towards goal
-            this.transform.rotation = Quaternion.RotateTowards(this.transform.rotation, immediateFollow.rotation, turnAmount);
-            //clamp camera x and y
-            this.transform.rotation = Quaternion.Euler(ClampAngle(this.transform.rotation.eulerAngles.x, -maxVertical, maxVertical), this.transform.rotation.eulerAngles.y, 0f);
-
-            if (isWalking)
+            if (isLooking)
             {
-                // Debug.Log("Looking to walk.");
+                immediateFollow.LookAt(followThis, Vector3.up);     //give a rotation proxy with no z rotation
 
-                if (Vector3.Distance(this.transform.position, followThis.position) > minDistance && rb != null)
+                float angleBetween = Quaternion.Angle(immediateFollow.rotation, this.transform.rotation);
+                float distanceBetween = Vector3.Distance(followThis.position, this.transform.position);
+
+                // Debug.Log("Angle between: " + angleBetween);
+                // Debug.Log("Distance between: " + distanceBetween);
+
+                float turnAmount = turnSpeed * Mathf.Min(angleBetween, maxAngle) / maxAngle;
+                float walkAmount = walkSpeed * Mathf.Min(distanceBetween, minDistance) / minDistance;
+
+                // Debug.Log("The dot is " + angleBetween + " angle away and we are turning toward it at " + turnAmount + ".");
+                //turn camera towards goal
+                this.transform.rotation = Quaternion.RotateTowards(this.transform.rotation, immediateFollow.rotation, turnAmount);
+                //clamp camera x and y
+                this.transform.rotation = Quaternion.Euler(ClampAngle(this.transform.rotation.eulerAngles.x, -maxVertical, maxVertical), this.transform.rotation.eulerAngles.y, 0f);
+
+                if (isWalking)
                 {
-                    rb.AddForce(Vector3.Min(this.gameObject.transform.forward * walkAmount, this.gameObject.transform.forward * walkSpeed/2f));
-                    // Debug.Log("The dot is " + distanceBetween + " far away and we are walking toward it at " + rb.velocity.magnitude + ".");
-                    
-                }
-                else
-                {
-                    Debug.Log("The dot is too close or there is no rigid body");
+                    // Debug.Log("Looking to walk.");
+
+                    if (Vector3.Distance(this.transform.position, followThis.position) > minDistance && rb != null)
+                    {
+                        rb.AddForce(Vector3.Min(this.gameObject.transform.forward * walkAmount, this.gameObject.transform.forward * walkSpeed / 2f));
+                        // Debug.Log("The dot is " + distanceBetween + " far away and we are walking toward it at " + rb.velocity.magnitude + ".");
+
+                    }
+                    else
+                    {
+                        Debug.Log("The dot is too close or there is no rigid body");
+                    }
                 }
             }
         }
