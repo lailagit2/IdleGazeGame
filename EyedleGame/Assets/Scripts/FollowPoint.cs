@@ -62,13 +62,13 @@ public class FollowPoint : MonoBehaviour
             float angleBetween = Quaternion.Angle(immediateFollow.rotation, this.transform.rotation);
             float distanceBetween = Vector3.Distance(followThis.position, this.transform.position);
 
-            Debug.Log("Angle between: " + angleBetween);
-            Debug.Log("Distance between: " + distanceBetween);
+            // Debug.Log("Angle between: " + angleBetween);
+            // Debug.Log("Distance between: " + distanceBetween);
 
             float turnAmount = turnSpeed * Mathf.Min(angleBetween, maxAngle) / maxAngle;
             float walkAmount = walkSpeed * Mathf.Min(distanceBetween, minDistance) / minDistance;
 
-            Debug.Log("The dot is " + angleBetween + " angle away and we are turning toward it at " + turnAmount + ".");
+            // Debug.Log("The dot is " + angleBetween + " angle away and we are turning toward it at " + turnAmount + ".");
             //turn camera towards goal
             this.transform.rotation = Quaternion.RotateTowards(this.transform.rotation, immediateFollow.rotation, turnAmount);
             //clamp camera x and y
@@ -76,12 +76,12 @@ public class FollowPoint : MonoBehaviour
 
             if (isWalking)
             {
-                Debug.Log("Looking to walk.");
+                // Debug.Log("Looking to walk.");
 
                 if (Vector3.Distance(this.transform.position, followThis.position) > minDistance && rb != null)
                 {
                     rb.AddForce(Vector3.Min(this.gameObject.transform.forward * walkAmount, this.gameObject.transform.forward * walkSpeed/2f));
-                    Debug.Log("The dot is " + distanceBetween + " far away and we are walking toward it at " + rb.velocity.magnitude + ".");
+                    // Debug.Log("The dot is " + distanceBetween + " far away and we are walking toward it at " + rb.velocity.magnitude + ".");
                     
                 }
                 else

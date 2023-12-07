@@ -1,30 +1,47 @@
 using UnityEngine;
 
-public class PauseMenu : MonoBehaviour
+public class PauseMenu : ToggleButton
 {
     [SerializeField] private GameObject gazeLocation;
+    [SerializeField] private GameObject uiCanvas;
 
-    [SerializeField] private FollowPoint followComponent;
+    private bool paused = false;
+
+    void Start()
+    {
+        setRender(false);
+        init(0.5f, 0.5f, FocusedMode.DEACTIVE);
+    }
+
+    public override GameObject GetGameObject()
+    {
+        return gameObject;
+    }
+
+    public override void OnActivate() => Toggle();
+    public override void OnDeactivate() => Toggle();
 
     // UI -> Unlit -> Transparent is how you get transparent materials
-    private void toggleRender() 
+    private void setRender(bool val) 
     {
+        uiCanvas.SetActive(val);
+
         foreach (var comp in GetComponentsInChildren<MeshRenderer>())
         {
             if (comp == GetComponent<MeshRenderer>()) continue;
-            comp.enabled = !comp.enabled;
+            comp.enabled = val;
         }
     }
 
     public void Toggle()
     {
-        bool unpaused = GetComponent<MeshRenderer>().enabled;
-        GetComponent<MeshRenderer>().enabled = !unpaused;
+        bool unpaused = !paused;
+        paused = unpaused;
         print("unpaused " + unpaused);
         gazeLocation.GetComponent<Renderer>().enabled = !unpaused;
         Camera.main.GetComponent<FollowPoint>().enabled = !unpaused;
 
-        toggleRender();
+        setRender(unpaused);
         followComponent.enabled = !unpaused;
 
         if (!unpaused) saveChanges();
@@ -34,18 +51,15 @@ public class PauseMenu : MonoBehaviour
     {
         foreach (var slider in GetComponentsInChildren<Slider>())
         {
-            slider.SetPMove(); 
+            slider.SetSliderValue(); 
         }
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        toggleRender();
     }
 
     // Update is called once per frame
     void Update()
     {
+        UpdateFocus();
+        if (Input.GetKeyDown(KeyCode.Escape)) 
+            Toggle();
     }
 }

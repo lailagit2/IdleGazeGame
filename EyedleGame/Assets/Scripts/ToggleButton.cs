@@ -1,6 +1,8 @@
+using System;
 using Tobii.Gaming;
 using UnityEngine;
 
+[Serializable]
 public class ToggleButton : MonoBehaviour
 {
     [SerializeField] bool mouseHoverEnabled = true;
@@ -19,28 +21,45 @@ public class ToggleButton : MonoBehaviour
     float lastFocusChange = 0;
     float DEACTIVATE_TIME = 1.5f;
     float ACTIVATE_TIME = 1.5f;
-    protected GameObject inheritingButton;
-    public void init(float DEACTIVATE_TIME, float ACTIVATE_TIME, FocusedMode focusedMode, GameObject inheritingButton)
+    public void init(float DEACTIVATE_TIME, float ACTIVATE_TIME, FocusedMode focusedMode)
     {
         this.DEACTIVATE_TIME = DEACTIVATE_TIME;
         this.ACTIVATE_TIME = ACTIVATE_TIME;
         this.focusedMode = focusedMode;
-        this.inheritingButton = inheritingButton;
     }
 
+    private static bool startedTobii = false;
     void Start()
     {
-        TobiiAPI.Start(null);
+        if (!startedTobii)
+        {
+            TobiiAPI.Start(null);
+            startedTobii = true;
+        }
     }
 
     // Please override these methods.
-    public virtual void OnActivate() {}
-    public virtual void OnDeactivate() {}
+    /*
+    public virtual GameObject GetGameObject() 
+    {
+        Debug.LogWarning("Please override getself");
+        return null;
+    }
+    */
+    public virtual GameObject GetGameObject() => null;
+    public virtual void OnActivate() => print("Please override activate");
+    public virtual void OnDeactivate() => print("Please override deactivate");
 
-    void Update()
+    public void UpdateFocus()
     {
         bool newFocused = IsFocused(); 
         lastFocusChange += Time.deltaTime;
+
+        if (GetGameObject().name == "slidebar")
+        {
+            print(focused);
+            print("state " + focusedMode);
+        }
 
         bool recur = true;
         while (recur)
@@ -63,6 +82,7 @@ public class ToggleButton : MonoBehaviour
                         var renderer = GetComponent<Renderer>();
                         renderer.material.color = Color.red;
                         recur = true;
+                        OnDeactivate();
                     }
                 }
                 break;
@@ -81,6 +101,7 @@ public class ToggleButton : MonoBehaviour
                         var renderer = GetComponent<Renderer>();
                         renderer.material.color = Color.green;
                         recur = true;
+                        OnActivate();
                     }
                 }
                 break;
@@ -105,23 +126,28 @@ public class ToggleButton : MonoBehaviour
             }
         }
 
+        /*
+        if (newFocused != focused)
+            print("changed to " + Enum.GetName(typeof(FocusedMode), focusedMode));
+        */
+
         focused = newFocused;
     }
 
     private bool IsFocused()
     {
         var focused = TobiiAPI.GetFocusedObject();
-        bool tobiiFocus = focused != null && focused == gameObject;
+        bool tobiiFocus = focused != null && focused == GetGameObject();
         if (!mouseHoverEnabled) return tobiiFocus;
         if (tobiiFocus) return true;
 
         var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out RaycastHit hit, float.PositiveInfinity, layerMask: LayerMask.GetMask("UI")))
         {
-            print("euwww " + hit.point);
-            if (hit.collider.gameObject == inheritingButton)
-            print("eurkea");
-            return hit.collider.gameObject == inheritingButton;
+            if (hit.collider.gameObject == GetGameObject())
+                print("eurkea " + GetGameObject());
+
+            return hit.collider.gameObject == GetGameObject();
         }
         return false;
     }
