@@ -21,8 +21,8 @@ public class ToggleButton : MonoBehaviour
 
     private FocusedMode focusedMode = FocusedMode.DEACTIVE;
     float lastFocusChange = 0;
-    float DEACTIVATE_TIME = 1.5f;
-    float ACTIVATE_TIME = 1.5f;
+    float DEACTIVATE_TIME = 0.5f;
+    float ACTIVATE_TIME = 0.5f;
     public void init(float DEACTIVATE_TIME, float ACTIVATE_TIME, FocusedMode focusedMode)
     {
         TobiiAPI.Start(null);
@@ -102,6 +102,7 @@ public class ToggleButton : MonoBehaviour
                         focusedMode = FocusedMode.DEACTIVE;
                         break;
                     }
+
                     if (lastFocusChange > ACTIVATE_TIME)
                     {
                         focusedMode = FocusedMode.ACTIVE;
@@ -140,6 +141,13 @@ public class ToggleButton : MonoBehaviour
                 }
                 break;
             }
+                if (followComponent.isWalking == true) {
+                    var renderer = GetComponent<Renderer>();
+                    renderer.material.color = Color.green;
+
+                }
+
+
         }
 
         /*

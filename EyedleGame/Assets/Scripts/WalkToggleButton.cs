@@ -6,7 +6,7 @@ public class WalkToggleButton : ToggleButton
     // Start is called before the first frame update
     void Start()
     {
-        init(1.5f, 1.5f, FocusedMode.DEACTIVE);
+        init(1.0f, 1.0f, FocusedMode.DEACTIVE);
     }
 
     void Update() => UpdateFocus();

@@ -20,7 +20,7 @@ public class FollowPoint : MonoBehaviour
     public float walkSpeed = 2f;            //walk speed multiplier
     public float turnSpeed = 1f;            //turn speed multiplier
 
-    public bool isWalking = false;
+    public bool isWalking = true;
     public bool isLooking = true;
 
     // Start is called before the first frame update

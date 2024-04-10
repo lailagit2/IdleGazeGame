@@ -5,6 +5,8 @@ public class PauseMenu : ToggleButton
     [SerializeField] private GameObject gazeLocation;
     [SerializeField] private GameObject uiCanvas;
     [SerializeField] private GameObject walkUI;
+    [SerializeField] private GameObject UIWalkToggle;
+
 
     private bool paused = false;
 
@@ -36,21 +38,25 @@ public class PauseMenu : ToggleButton
 
     public void Toggle()
     {
-        bool unpaused = !paused;
-        paused = unpaused;
-        print("unpaused " + unpaused);
+        /*     bool unpaused = !paused;
+             paused = unpaused;
+             print("unpaused " + unpaused);*/
 
-        walkUI.SetActive(!unpaused);
+        walkUI.GetComponent<Renderer>().enabled = !paused;
+        Debug.Log(UIWalkToggle.name, UIWalkToggle);
+
+        UIWalkToggle.SetActive(paused);
+
 
         //gazeLocation.GetComponent<Renderer>().enabled = !unpaused;
         //Camera.main.GetComponent<FollowPoint>().enabled = !unpaused;
 
-        setRender(unpaused);
-        followComponent.isLooking = !unpaused;
+        setRender(!paused);
+        followComponent.isLooking = paused;
 
         
 
-        if (!unpaused) saveChanges();
+        if (paused) saveChanges();
     }
 
     private void saveChanges()
